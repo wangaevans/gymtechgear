@@ -88,7 +88,7 @@ const TestimonialCarousel = () => {
                         />
                       ))}
                     </div>
-                    <p className="text-gray-700 text-lg italic">"{testimonial.quote}"</p>
+                    <p className="text-gray-700 text-lg italic">&quot;{testimonial.quote}&quot;</p>
                   </div>
                 </div>
               ))}
