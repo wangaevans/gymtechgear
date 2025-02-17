@@ -8,9 +8,6 @@ import TestimonialCarousel from './components/testimonials';
 import NewArrivals from './components/new-arrivals';
 
 const HomePage = () => {
-
-
-
   return (
     <>
       <main>

@@ -71,7 +71,7 @@ export default function Footer() {
             <div>
               <h3 className="text-lg font-bold text-white mb-6">Shop</h3>
               <ul className="space-y-3">
-                {['Men\'s Collection', 'Women\'s Collection', 'New Arrivals', 'Best Sellers', 'Special Offers'].map((item) => (
+                {['Men\'s Collection', 'Women\'s Collection', 'New Arrivals', 'Special Offers'].map((item) => (
                   <li key={item}>
                     <a href="#" className="text-gray-400 hover:text-white transition-colors duration-300">
                       {item}
