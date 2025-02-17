@@ -9,7 +9,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { isLoaded, isSignedIn } = useUser();
+  const {isSignedIn } = useUser();
 
   // Close mobile menu when window resizes to desktop
   useEffect(() => {

@@ -211,7 +211,7 @@ const CartPage: React.FC = () => {
         ) : (
           <div className="text-center py-16">
             <h2 className="text-2xl font-medium text-gray-900 mb-4">Your cart is empty</h2>
-            <p className="text-gray-600 mb-8">Looks like you haven't added any items to your cart yet.</p>
+            <p className="text-gray-600 mb-8">Looks like you haven&apos;t added any items to your cart yet.</p>
             <button
               className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               aria-label="Start shopping"
