@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^6.11.3",
-    "@sanity/image-url": "^1.1.0",
+    "@sanity/image-url": "^1.1",
     "@sanity/vision": "^3.75.1",
     "framer-motion": "^12.4.2",
     "lucide-react": "^0.475.0",
