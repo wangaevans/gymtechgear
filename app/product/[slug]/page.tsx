@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import ProductDetails from "../components/ProductDetails";
 import { Product } from "@/types/product";
 
-export default async function ProductPage({ params }: { params: { slug: string } }) {
+export default async function ProductPage(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   // Fetch product data from Sanity in the Server Component
   const product: Product | null = await client.fetch(productBySlugQuery, { 
     slug: params.slug 
