@@ -19,6 +19,20 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     },
     {
+      name: "targetAudience",
+      title: "Target Audience",
+      type: "string",
+      description:
+        "Optional: Specify the audience for this category (e.g., 'Women', 'Men', 'Kids').",
+        options: {
+          list: [
+            { title: "Men", value: "men" },
+            { title: "Women", value: "women" },
+            { title: "Unisex", value: "unisex" },
+          ],
+        },
+    },
+    {
       name: "category",
       title: "Category",
       type: "reference",

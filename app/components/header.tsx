@@ -1,160 +1,311 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Menu, Search, User, X } from "lucide-react";
 import { UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { allCategoriesQuery } from "@/sanity/lib/queries";
+import { motion, AnimatePresence } from "framer-motion";
+import { useDebounce } from "@/hooks/useDebounce";
 import { client } from "@/sanity/lib/client";
-import { Category } from "@/types/category";
+import { searchProductsQuery } from "@/sanity/lib/queries";
+import { Product } from "@/types/product";
 
-type NavItem = {
-  name: string;
-  href: string;
-};
+const navLinks = [
+  { name: "Home", href: "/" },
+  { name: "Men", href: "/audience/men" },
+  { name: "Women", href: "/audience/women" },
+  { name: "Training", href: "/category/training" },
+  { name: "Contact", href: "/contact" },
+];
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [navItems, setNavItems] = useState<NavItem[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState<Product[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const pathname = usePathname();
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const categories = await client.fetch(allCategoriesQuery);
-        const categoryLinks: NavItem[] = categories.map((cat: Category) => ({
-          name: cat.name,
-          href: `/category/${cat.slug?.current}`,
-        }));
-
-        setNavItems([
-          { name: "Home", href: "/" },
-          // { name: "About", href: "/about" },
-          ...categoryLinks,
-          { name: "Contact", href: "/contact" },
-        ]);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setIsSearchOpen(false);
+        setSearchTerm("");
       }
     };
 
-    fetchCategories();
-  }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
-  // Close menu when route changes
   useEffect(() => {
     setIsMenuOpen(false);
   }, [pathname]);
 
-  const isActive = (href: string) => {
-    return pathname === href;
+  useEffect(() => {
+    if (!debouncedSearchTerm) {
+      setSearchResults([]);
+      return;
+    }
+
+    const fetchResults = async () => {
+      setIsSearching(true);
+      try {
+        // Updated query parameters to match Sanity client's expected type
+        const results = await client.fetch<Product[]>(
+          searchProductsQuery,
+          { searchTerm: debouncedSearchTerm }
+        );
+        setSearchResults(results);
+      } catch (error) {
+        console.error("Search error:", error);
+      }
+      setIsSearching(false);
+    };
+
+    fetchResults();
+  }, [debouncedSearchTerm]);
+
+  const isLinkActive = (href: string) => {
+    if (href === "/") {
+      return pathname === href;
+    }
+    return pathname.startsWith(href);
   };
 
   return (
-    <header className={`sticky top-0 z-20 bg-white ${scrolled ? "shadow-md" : "shadow-sm"} transition-shadow duration-300`}>
-      <div className="bg-black text-white text-center py-2 text-sm">
-        Free shipping on orders over $100 | Shop Now
-      </div>
+    <motion.header
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      className={`sticky top-0 z-20 bg-white ${
+        scrolled ? "shadow-md" : "shadow-sm"
+      } transition-all duration-300`}
+    >
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="bg-black text-white text-center py-2 text-sm"
+      >
+        <motion.span
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          Free shipping on orders over $100 | Shop Now
+        </motion.span>
+      </motion.div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center h-16 md:h-20">
-        <button 
-          className={`lg:hidden transition-transform duration-300 ${isMenuOpen ? "rotate-180" : ""}`}
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="lg:hidden"
         >
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        </motion.button>
 
-        <div className="text-2xl font-bold transition-transform hover:scale-105">
+        <motion.div
+          initial={{ x: -20, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          className="text-2xl font-bold"
+        >
           <Link href="/">GymTechWear</Link>
-        </div>
+        </motion.div>
 
-        <nav className="hidden lg:flex space-x-8">
-          {navItems.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className={`relative py-2 transition-colors duration-200
-                ${isActive(item.href) 
-                  ? "text-black font-medium" 
-                  : "text-gray-600 hover:text-black"
-                }
-                ${isActive(item.href) && "after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-black after:transition-transform after:duration-300"}
-              `}
+        <nav className="hidden lg:flex space-x-6">
+          {navLinks.map((link, index) => (
+            <motion.div
+              key={link.href}
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: index * 0.1 }}
             >
-              {item.name}
-            </Link>
+              <Link
+                href={link.href}
+                className={`text-gray-700 hover:text-black transition-all relative group ${
+                  isLinkActive(link.href) ? "text-black font-medium" : ""
+                }`}
+              >
+                {link.name}
+                <motion.span
+                  className={`absolute bottom-0 left-0 h-0.5 bg-black transition-all duration-300 ${
+                    isLinkActive(link.href) ? "w-full" : "w-0"
+                  }`}
+                  whileHover={{ width: "100%" }}
+                />
+              </Link>
+            </motion.div>
           ))}
         </nav>
 
-        <div className="flex items-center space-x-4">
-          <button className="transition-transform hover:scale-110">
-            <Search size={22} className="text-gray-800" />
-          </button>
+        <motion.div
+          initial={{ x: 20, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          className="flex items-center space-x-4"
+          ref={searchRef}
+        >
+          <motion.div className="relative">
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setIsSearchOpen(!isSearchOpen)}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            >
+              <Search
+                size={22}
+                className={`text-gray-800 transition-transform duration-300 ${
+                  isSearchOpen ? "rotate-90" : "rotate-0"
+                }`}
+              />
+            </motion.button>
+
+            <AnimatePresence>
+              {isSearchOpen && (
+                <motion.div
+                  initial={{ width: 0, opacity: 0 }}
+                  animate={{ width: "300px", opacity: 1 }}
+                  exit={{ width: 0, opacity: 0 }}
+                  transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                  className="absolute right-0 top-1/2 -translate-y-1/2"
+                >
+                  <motion.div
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.8, opacity: 0 }}
+                    className="flex items-center bg-white border border-gray-300 rounded-full px-4 py-2 shadow-lg"
+                  >
+                    <input
+                      type="text"
+                      placeholder="Search for products..."
+                      className="w-full outline-none text-sm bg-transparent"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      autoFocus
+                    />
+                    {isSearching && (
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                      >
+                        <Search size={18} className="text-gray-400" />
+                      </motion.div>
+                    )}
+                  </motion.div>
+
+                  <AnimatePresence>
+                    {searchTerm && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        className="absolute right-0 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-xl"
+                      >
+                        {searchResults.length > 0 ? (
+                          searchResults.map((product, index) => (
+                            <motion.div
+                              key={product._id}
+                              initial={{ opacity: 0, x: -20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: index * 0.1 }}
+                              className="border-b last:border-b-0"
+                            >
+                              <Link
+                                href={`/product/${product.slug.current}`}
+                                className="flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors"
+                                onClick={() => setIsSearchOpen(false)}
+                              >
+                                {product.image && (
+                                  <div className="relative w-10 h-10">
+                                    <Image
+                                      src={product.image.asset.url!}
+                                      alt={product.name}
+                                      fill
+                                      className="object-cover rounded-md"
+                                      sizes="40px"
+                                    />
+                                  </div>
+                                )}
+                                <div>
+                                  <p className="text-sm font-medium">{product.name}</p>
+                                  <p className="text-xs text-gray-500">${product.price}</p>
+                                </div>
+                              </Link>
+                            </motion.div>
+                          ))
+                        ) : (
+                          <motion.p
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="p-3 text-gray-500 text-sm"
+                          >
+                            {isSearching ? "Searching..." : "No results found"}
+                          </motion.p>
+                        )}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
 
           <SignedIn>
-            <UserButton 
-              afterSignOutUrl="/" 
-              appearance={{ 
-                elements: { 
-                  userButtonAvatarBox: "w-8 h-8" 
-                } 
-              }} 
-            />
+            <UserButton afterSignOutUrl="/" />
           </SignedIn>
-
           <SignedOut>
-            <Link href="/sign-in">
-              <User size={22} className="text-gray-800 transition-transform hover:scale-110" />
-            </Link>
-          </SignedOut>
-        </div>
-      </div>
-
-      {/* Mobile Navigation Overlay */}
-      <div 
-        className={`fixed inset-0 bg-black/50 transition-opacity duration-300 lg:hidden
-          ${isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"}
-        `}
-        onClick={() => setIsMenuOpen(false)}
-      />
-
-      {/* Mobile Navigation Drawer */}
-      <div 
-        className={`fixed top-0 left-0 h-full w-72 bg-white transform transition-transform duration-300 ease-out lg:hidden
-          ${isMenuOpen ? "translate-x-0" : "-translate-x-full"}
-        `}
-      >
-        <div className="p-6">
-          <div className="text-xl font-bold mb-8">Navigation</div>
-          <nav className="flex flex-col space-y-1">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={`px-4 py-3 rounded-lg transition-all duration-200
-                  ${isActive(item.href)
-                    ? "bg-black text-white font-medium"
-                    : "text-gray-600 hover:bg-gray-100"
-                  }
-                `}
-              >
-                {item.name}
+            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+              <Link href="/sign-in">
+                <User size={22} className="text-gray-800" />
               </Link>
-            ))}
-          </nav>
-        </div>
+            </motion.div>
+          </SignedOut>
+        </motion.div>
       </div>
-    </header>
+
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.nav
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="lg:hidden absolute top-full left-0 w-full bg-white border-b border-gray-200 shadow-md z-50 overflow-hidden"
+          >
+            <motion.div className="flex flex-col space-y-4 p-4">
+              {navLinks.map((link, index) => (
+                <motion.div
+                  key={link.href}
+                  initial={{ x: -20, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <Link
+                    href={link.href}
+                    onClick={() => setIsMenuOpen(false)}
+                    className={`text-gray-700 text-lg hover:text-black transition-all block ${
+                      isLinkActive(link.href) ? "text-black font-medium" : ""
+                    }`}
+                  >
+                    {link.name}
+                  </Link>
+                </motion.div>
+              ))}
+            </motion.div>
+          </motion.nav>
+        )}
+      </AnimatePresence>
+    </motion.header>
   );
 };
 

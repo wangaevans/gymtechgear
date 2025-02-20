@@ -1,14 +1,17 @@
-import {
-  ClerkProvider,
-} from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import Footer from "./components/footer";
 import Header from "./components/header";
-export default function RootLayout({
+
+// Mark the component as async to allow static data fetching
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // Fetch categories at build time
+  // const categories = await client.fetch(allCategoriesQuery);
+
   return (
     <ClerkProvider>
       <html lang="en">

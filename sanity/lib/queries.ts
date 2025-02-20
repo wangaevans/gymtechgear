@@ -142,3 +142,78 @@ export const newArrivalsQuery = groq`
     slug
   }
 `
+
+export const productsByAudienceQuery = groq`
+  *[_type == "product" && targetAudience == $audience] | order(name asc) {
+    _id,
+    name,
+    slug,
+    price,
+    description,
+    image {
+      asset-> {
+        _id,
+        url
+      }
+    },
+    category-> {
+      _id,
+      name
+    },
+    brand,
+    rating,
+    amazonAffiliateLink,
+    size,
+    color
+  }
+`;
+
+export const allProductsQuery = groq`
+  *[_type == "product"] | order(name asc) {
+    _id,
+    name,
+    slug,
+    price,
+    description,
+    image {
+      asset-> {
+        _id,
+        url
+      }
+    },
+    category-> {
+      _id,
+      name
+    },
+    brand,
+    rating,
+    amazonAffiliateLink,
+    size,
+    color
+  }
+`;
+
+export const searchProductsQuery = groq`
+  *[_type == "product" && name match $query] | order(name asc) {
+    _id,
+    name,
+    slug,
+    price,
+    description,
+    image {
+      asset-> {
+        _id,
+        url
+      }
+    },
+    category-> {
+      _id,
+      name
+    },
+    brand,
+    rating,
+    amazonAffiliateLink,
+    size,
+    color
+  }
+`;

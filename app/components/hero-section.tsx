@@ -1,10 +1,14 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { ChevronDown, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const HeroSection = () => {
+  const menLink = '/audience/men';
+  const womenLink = '/audience/women';
+
   return (
     <section className="relative min-h-screen w-full flex items-center overflow-hidden">
       {/* Video Background */}
@@ -120,40 +124,45 @@ const HeroSection = () => {
               ease: "easeOut"
             }}
           >
-            <motion.button 
-              className="group relative overflow-hidden bg-white text-black px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold w-full sm:w-auto"
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ duration: 0.2 }}
-            >
-              <span className="relative z-10 flex items-center justify-center gap-2">
-                Shop Men
-                <motion.span
-                  className="inline-block"
-                  whileHover={{ x: 4 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <ArrowRight className="w-5 h-5" />
-                </motion.span>
-              </span>
-            </motion.button>
-            <motion.button 
-              className="group bg-transparent border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold w-full sm:w-auto"
-              whileHover={{ backgroundColor: "rgba(255,255,255,1)", color: "#000" }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ duration: 0.2 }}
-            >
-              <span className="flex items-center justify-center gap-2">
-                Shop Women
-                <motion.span
-                  className="inline-block"
-                  whileHover={{ x: 4 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <ArrowRight className="w-5 h-5" />
-                </motion.span>
-              </span>
-            </motion.button>
+            <Link href={menLink}>
+              <motion.button 
+                className="group relative overflow-hidden bg-white text-black px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold w-full sm:w-auto"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ duration: 0.2 }}
+              >
+                <span className="relative z-10 flex items-center justify-center gap-2">
+                  Shop Men
+                  <motion.span
+                    className="inline-block"
+                    whileHover={{ x: 4 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <ArrowRight className="w-5 h-5" />
+                  </motion.span>
+                </span>
+              </motion.button>
+            </Link>
+            
+            <Link href={womenLink}>
+              <motion.button 
+                className="group bg-transparent border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold w-full sm:w-auto"
+                whileHover={{ backgroundColor: "rgba(255,255,255,1)", color: "#000" }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ duration: 0.2 }}
+              >
+                <span className="flex items-center justify-center gap-2">
+                  Shop Women
+                  <motion.span
+                    className="inline-block"
+                    whileHover={{ x: 4 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <ArrowRight className="w-5 h-5" />
+                  </motion.span>
+                </span>
+              </motion.button>
+            </Link>
           </motion.div>
         </div>
 

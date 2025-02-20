@@ -4,8 +4,10 @@ export interface Product {
     name: string;
     price: number;
     description: string;
+    slug: { current: string };
     image: {
       asset: {
+        [x: string]: string | undefined;
         _ref: string;
       };
     };
