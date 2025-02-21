@@ -194,7 +194,7 @@ export const allProductsQuery = groq`
 `;
 
 export const searchProductsQuery = groq`
-  *[_type == "product" && name match $query] | order(name asc) {
+  *[_type == "product" && name match $searchTerm] | order(name asc) {
     _id,
     name,
     slug,

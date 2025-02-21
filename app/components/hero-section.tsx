@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ChevronDown, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -11,22 +12,32 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen w-full flex items-center overflow-hidden">
-      {/* Video Background */}
+      {/* Background Image with Next.js Image */}
       <div className="absolute inset-0 z-0">
-        <motion.img
-          src="/img/fitness.jpg"
-          alt="Hero"
-          className="w-full h-full object-cover"
-          initial={{ scale: 1 }}
-          animate={{ scale: 1.1 }}
-          transition={{ 
-            duration: 20, 
-            repeat: Infinity, 
-            repeatType: "reverse",
-            ease: "easeInOut"
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/20" />
+        <div className="relative w-full h-full">
+          <motion.div
+            className="relative w-full h-full"
+            initial={{ scale: 1 }}
+            animate={{ scale: 1.1 }}
+            transition={{ 
+              duration: 20, 
+              repeat: Infinity, 
+              repeatType: "reverse",
+              ease: "easeInOut"
+            }}
+          >
+            <Image
+              src="/img/fitness.jpg"
+              alt="Athletic person working out"
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+              quality={90}
+            />
+          </motion.div>
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-transparent" />
       </div>
 
       {/* Content */}
@@ -48,7 +59,7 @@ const HeroSection = () => {
               }
             }}
           >
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white leading-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white leading-tight tracking-tight">
               <motion.div 
                 className="overflow-hidden inline-block"
                 variants={{
@@ -57,7 +68,7 @@ const HeroSection = () => {
                 }}
               >
                 <motion.span 
-                  className="inline-block"
+                  className="inline-block bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80"
                   variants={{
                     hidden: { y: 100 },
                     visible: { 
@@ -80,7 +91,7 @@ const HeroSection = () => {
                 }}
               >
                 <motion.span 
-                  className="inline-block"
+                  className="inline-block bg-clip-text text-transparent bg-gradient-to-r from-white/80 to-white"
                   variants={{
                     hidden: { y: 100 },
                     visible: { 
@@ -100,7 +111,7 @@ const HeroSection = () => {
 
           {/* Description with fade-in animation */}
           <motion.p
-            className="text-lg sm:text-xl lg:text-2xl text-white/80 max-w-xl"
+            className="text-lg sm:text-xl lg:text-2xl text-white/90 max-w-xl font-light"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ 
@@ -115,7 +126,7 @@ const HeroSection = () => {
 
           {/* CTA Buttons */}
           <motion.div
-            className="flex flex-col sm:flex-row gap-4 mt-2"
+            className="flex flex-col sm:flex-row gap-4 mt-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ 
@@ -124,19 +135,20 @@ const HeroSection = () => {
               ease: "easeOut"
             }}
           >
-            <Link href={menLink}>
+            <Link href={menLink} className="sm:w-auto">
               <motion.button 
-                className="group relative overflow-hidden bg-white text-black px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold w-full sm:w-auto"
+                className="group relative overflow-hidden bg-white text-black px-8 py-4 rounded-full font-semibold w-full transition-transform"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
-                transition={{ duration: 0.2 }}
               >
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                />
                 <span className="relative z-10 flex items-center justify-center gap-2">
                   Shop Men
                   <motion.span
                     className="inline-block"
                     whileHover={{ x: 4 }}
-                    transition={{ duration: 0.2 }}
                   >
                     <ArrowRight className="w-5 h-5" />
                   </motion.span>
@@ -144,19 +156,20 @@ const HeroSection = () => {
               </motion.button>
             </Link>
             
-            <Link href={womenLink}>
+            <Link href={womenLink} className="sm:w-auto">
               <motion.button 
-                className="group bg-transparent border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold w-full sm:w-auto"
-                whileHover={{ backgroundColor: "rgba(255,255,255,1)", color: "#000" }}
+                className="group relative overflow-hidden border-2 border-white text-white px-8 py-4 rounded-full font-semibold w-full transition-all duration-300"
+                whileHover={{ 
+                  backgroundColor: "rgba(255,255,255,1)", 
+                  color: "#000"
+                }}
                 whileTap={{ scale: 0.98 }}
-                transition={{ duration: 0.2 }}
               >
                 <span className="flex items-center justify-center gap-2">
                   Shop Women
                   <motion.span
                     className="inline-block"
                     whileHover={{ x: 4 }}
-                    transition={{ duration: 0.2 }}
                   >
                     <ArrowRight className="w-5 h-5" />
                   </motion.span>
@@ -168,7 +181,7 @@ const HeroSection = () => {
 
         {/* Scroll Indicator */}
         <motion.div
-          className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 cursor-pointer"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 cursor-pointer"
           initial={{ opacity: 0 }}
           animate={{ 
             opacity: 1,
@@ -179,13 +192,16 @@ const HeroSection = () => {
             y: { delay: 1.5, duration: 1.5, repeat: Infinity, ease: "easeInOut" }
           }}
         >
-          <ChevronDown className="w-6 h-6 sm:w-8 sm:h-8 text-white/80 hover:text-white" />
+          <ChevronDown className="w-8 h-8 text-white/80 hover:text-white transition-colors duration-300" />
         </motion.div>
 
-        {/* Floating Elements */}
+        {/* Animated Decorative Elements */}
         <motion.div
-          className="absolute top-1/4 right-8 w-24 sm:w-32 h-24 sm:h-32 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-xl pointer-events-none"
-          animate={{ y: [0, -20, 0] }}
+          className="absolute top-1/4 right-8 w-32 h-32 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-2xl pointer-events-none"
+          animate={{ 
+            y: [0, -20, 0],
+            scale: [1, 1.1, 1]
+          }}
           transition={{ 
             duration: 6, 
             repeat: Infinity, 
@@ -193,8 +209,11 @@ const HeroSection = () => {
           }}
         />
         <motion.div
-          className="absolute bottom-1/4 right-1/4 w-16 sm:w-24 h-16 sm:h-24 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full blur-xl pointer-events-none"
-          animate={{ y: [0, -20, 0] }}
+          className="absolute bottom-1/4 right-1/4 w-24 h-24 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full blur-2xl pointer-events-none"
+          animate={{ 
+            y: [0, -20, 0],
+            scale: [1, 1.2, 1]
+          }}
           transition={{ 
             duration: 7, 
             repeat: Infinity, 

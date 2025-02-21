@@ -28,7 +28,7 @@ const Header = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -50,8 +50,29 @@ const Header = () => {
   }, []);
 
   useEffect(() => {
-    setIsMenuOpen(false);
-  }, [pathname]);
+    if (!debouncedSearchTerm) {
+      setSearchResults([]);
+      return;
+    }
+  
+    const fetchResults = async () => {
+      setIsSearching(true);
+      try {
+        console.log('Searching for:', debouncedSearchTerm); // Debug search term
+        const results = await client.fetch<Product[]>(
+          searchProductsQuery,
+          { searchTerm: debouncedSearchTerm }
+        );
+        console.log('Search results:', results); // Debug results
+        setSearchResults(results);
+      } catch (error) {
+        console.error("Search error:", error);
+      }
+      setIsSearching(false);
+    };
+  
+    fetchResults();
+  }, [debouncedSearchTerm]);
 
   useEffect(() => {
     if (!debouncedSearchTerm) {

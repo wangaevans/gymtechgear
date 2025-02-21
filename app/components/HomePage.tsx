@@ -1,8 +1,9 @@
-"use client";
+'use client';
 
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Category } from '@/types/category';
 import HeroSection from './hero-section';
 import NewArrivals from './new-arrivals';
@@ -42,11 +43,16 @@ const HomePage = ({ categories }: HomePageProps) => {
                   key={category._id}
                   className="group relative overflow-hidden rounded-2xl h-96"
                 >
-                  <img
-                    src={category.image?.asset?.url || "/img/placeholder.jpg"}
-                    alt={category.name}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={category.image?.asset?.url || "/img/placeholder.jpg"}
+                      alt={category.name}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      priority={true}
+                    />
+                  </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-8">
                     <div>
                       <h3 className="text-2xl font-bold text-white mb-2">{category.name}</h3>
