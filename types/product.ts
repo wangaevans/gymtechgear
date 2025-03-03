@@ -1,15 +1,22 @@
-// @/types/product.ts
-export interface Product {
-    _id: string;
-    name: string;
-    price: number;
-    description: string;
-    slug: { current: string };
-    image: {
-      asset: {
-        [x: string]: string | undefined;
-        _ref: string;
-      };
+export type Product = {
+  _id: string;
+  name: string;
+  slug: {
+    current: string;
+  };
+  price: number;
+  description?: string;
+  image?: {
+    asset: {
+      _id: string;
+      url: string;
     };
-    amazonAffiliateLink?: string;
-  }
+  };
+  category?: string;
+  brand?: string;
+  rating?: number;
+  amazonAffiliateLink?: string;
+  size?: string[];
+  color?: string[];
+  isNewArrival?: boolean;
+};

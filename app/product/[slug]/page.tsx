@@ -14,6 +14,5 @@ export default async function ProductPage(props: { params: Promise<{ slug: strin
   if (!product) {
     notFound();
   }
-
   return <ProductDetails product={product} />;
 }

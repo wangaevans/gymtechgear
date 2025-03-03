@@ -1,192 +1,204 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Send, MapPin, Phone, Mail, CheckCircle } from "lucide-react";
+import React, { useState } from 'react';
+import { Send, Phone, Mail} from 'lucide-react';
+import { toast } from 'react-hot-toast';
 
-export default function ContactPage() {
-  const [submitted, setSubmitted] = useState(false);
+const ContactSection = () => {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
   });
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    setSubmitted(true);
-    setFormData({ name: "", email: "", subject: "", message: "" });
+    setLoading(true);
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.success('Message sent successfully!');
+        setFormData({
+          name: '',
+          email: '',
+          subject: '',
+          message: ''
+        });
+      } else {
+        toast.error(data.message || 'Failed to send message');
+      }
+    } catch (error) {
+      toast.error('An unexpected error occurred');
+      console.error('Contact form error:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-
   return (
-    <main className="min-h-screen py-16 px-4">
-      <div className="max-w-6xl mx-auto">
-        {/* Header Section */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Get in Touch
-          </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Have questions about our products or services? We&apos;d love to hear from you. 
-            Send us a message and we&apos;ll respond as soon as possible.
-          </p>
-        </div>
+    <section className="bg-gray-50 py-20 px-4">
+      <div className="max-w-7xl mx-auto">
+        <h2 className="text-3xl font-bold text-center mb-2">Contact Us</h2>
+        <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+          Have questions about our products or services? Reach out to us and our team will get back to you as soon as possible.
+        </p>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          {/* Contact Information */}
-          <div className="lg:col-span-1">
-            <div className="bg-gray-50 p-8 rounded-xl">
-              <h2 className="text-xl font-semibold mb-6">Contact Information</h2>
+          {/* Contact Info */}
+          <div className="hidden md:block lg:col-span-1">
+            <div className="bg-white rounded-xl shadow-sm p-8">
+              <h3 className="text-xl font-semibold mb-6">Get In Touch</h3>
               
               <div className="space-y-6">
-                <div className="flex items-start space-x-4">
-                  <MapPin className="w-6 h-6 text-blue-600 mt-1" />
+                <div className="flex items-start">
+                  <div className="bg-primary/10 p-3 rounded-full mr-4">
+                    <Phone className="w-5 h-5 text-primary" />
+                  </div>
                   <div>
-                    <h3 className="font-medium">Our Location</h3>
+                    <h4 className="font-medium text-gray-900">Phone</h4>
+                    <p className="text-gray-600 mt-1">(123) 456-7890</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start">
+                  <div className="bg-primary/10 p-3 rounded-full mr-4">
+                    <Mail className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-gray-900">Email</h4>
+                    <p className="text-gray-600 mt-1">support@gymtechwear.com</p>
+                  </div>
+                </div>
+                
+                {/* <div className="flex items-start">
+                  <div className="bg-primary/10 p-3 rounded-full mr-4">
+                    <MapPin className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-gray-900">Address</h4>
                     <p className="text-gray-600 mt-1">
-                      123 Fitness Street
-                      <br />
+                      123 Commerce Street<br />
+                      Suite 100<br />
                       New York, NY 10001
                     </p>
                   </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <Phone className="w-6 h-6 text-blue-600 mt-1" />
-                  <div>
-                    <h3 className="font-medium">Phone</h3>
-                    <p className="text-gray-600 mt-1">
-                      +1 (555) 123-4567
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <Mail className="w-6 h-6 text-blue-600 mt-1" />
-                  <div>
-                    <h3 className="font-medium">Email</h3>
-                    <p className="text-gray-600 mt-1">
-                      support@gymtechwear.com
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Business Hours */}
-              <div className="mt-8 pt-8 border-t">
-                <h3 className="font-medium mb-4">Business Hours</h3>
-                <div className="space-y-2 text-gray-600">
-                  <p className="flex justify-between">
-                    <span>Monday - Friday:</span>
-                    <span>9:00 AM - 6:00 PM</span>
-                  </p>
-                  <p className="flex justify-between">
-                    <span>Saturday:</span>
-                    <span>10:00 AM - 4:00 PM</span>
-                  </p>
-                  <p className="flex justify-between">
-                    <span>Sunday:</span>
-                    <span>Closed</span>
-                  </p>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
-
+          
           {/* Contact Form */}
           <div className="lg:col-span-2">
-            {submitted ? (
-              <div className="h-full flex items-center justify-center">
-                <div className="text-center">
-                  <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-                  <h2 className="text-2xl font-semibold mb-2">Thank You!</h2>
-                  <p className="text-gray-600 mb-4">
-                    Your message has been sent successfully. We&apos;ll get back to you soon.
-                  </p>
-                  <button
-                    onClick={() => setSubmitted(false)}
-                    className="text-blue-600 font-medium hover:text-blue-700"
-                  >
-                    Send another message
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Your Name
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={formData.name}
-                      onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-                      placeholder="John Doe"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Email Address
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      value={formData.email}
-                      onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-                      placeholder="john@example.com"
-                    />
-                  </div>
-                </div>
-
+            <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-sm p-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Subject
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                    Your Name
                   </label>
                   <input
                     type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
                     required
-                    value={formData.subject}
-                    onChange={(e) => setFormData({...formData, subject: e.target.value})}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-                    placeholder="How can we help?"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+                    placeholder="James White"
                   />
                 </div>
-
+                
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Message
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                    Your Email
                   </label>
-                  <textarea
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
                     required
-                    value={formData.message}
-                    onChange={(e) => setFormData({...formData, message: e.target.value})}
-                    rows={6}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent resize-none"
-                    placeholder="Your message..."
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+                    placeholder="you@gmail.com"
                   />
                 </div>
-
-                <button
-                  type="submit"
-                  className="w-full md:w-auto px-8 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors duration-200 flex items-center justify-center gap-2"
-                >
-                  <Send size={20} />
-                  Send Message
-                </button>
-              </form>
-            )}
+              </div>
+              
+              <div className="mb-6">
+                <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
+                  Subject
+                </label>
+                <input
+                  type="text"
+                  id="subject"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+                  placeholder="How can we help you?"
+                />
+              </div>
+              
+              <div className="mb-6">
+                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+                  Message
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                  rows={5}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+                  placeholder="Your message..."
+                />
+              </div>
+              
+              <button
+                type="submit"
+                disabled={loading}
+                className="inline-flex items-center justify-center px-6 py-3 bg-black border border-transparent rounded-lg text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors disabled:opacity-70"
+              >
+                {loading ? (
+                  <span className="flex items-center">
+                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Sending...
+                  </span>
+                ) : (
+                  <span className="flex items-center">
+                    Send Message
+                    <Send className="ml-2 w-4 h-4" />
+                  </span>
+                )}
+              </button>
+            </form>
           </div>
         </div>
       </div>
-    </main>
+    </section>
   );
-}
+};
+
+export default ContactSection;

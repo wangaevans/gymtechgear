@@ -9,7 +9,7 @@ export default function Footer() {
        {/* Footer */}
        <footer className="bg-black text-gray-300">
         {/* Newsletter Section */}
-        <div className="border-b border-gray-800">
+        {/* <div className="border-b border-gray-800">
           <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col md:flex-row justify-between items-center gap-8">
               <div>
@@ -28,7 +28,7 @@ export default function Footer() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Main Footer Content */}
         <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">

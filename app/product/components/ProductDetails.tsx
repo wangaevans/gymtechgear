@@ -3,26 +3,17 @@
 import { useState } from "react";
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
+import { Product } from "@/types/product";
+import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 
-interface Product {
-  _id: string;
-  name: string;
-  price: number;
-  description: string;
-  image: {
-    asset: {
-      _ref: string;
-    };
-  };
-  amazonAffiliateLink?: string;
-}
+
 
 export default function ProductDetails({ product }: { product: Product }) {
   const [expanded, setExpanded] = useState(false);
-  const shortDescription = product.description.slice(0, 150);
+  const shortDescription = product.description!.slice(0, 150);
 
   // Generate the optimized image URL from Sanity
-  const imageUrl = urlFor(product.image)
+  const imageUrl = urlFor(product.image as SanityImageSource)
     .width(600)
     .height(600)
     .quality(90)

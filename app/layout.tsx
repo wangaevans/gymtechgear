@@ -2,6 +2,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import Footer from "./components/footer";
 import Header from "./components/header";
+import { Toaster } from 'react-hot-toast';
 
 // Mark the component as async to allow static data fetching
 export default async function RootLayout({
@@ -17,6 +18,7 @@ export default async function RootLayout({
       <html lang="en">
         <body>
           <Header />
+          <Toaster position="top-right" toastOptions={{ duration: 5000 }} />
           {children}
           <Footer />
         </body>
