@@ -13,7 +13,7 @@ const TestimonialCarousel = () => {
       name: 'Alex Thompson',
       role: 'Professional Athlete',
       image: '/img/man.jpg',
-      quote: 'The quality and performance of GymTechWear has revolutionized my training routine.',
+      quote: 'The quality and performance of gymtechgear has revolutionized my training routine.',
       rating: 5
     },
     {

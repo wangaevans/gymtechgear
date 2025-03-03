@@ -142,7 +142,7 @@ const Header = () => {
           animate={{ x: 0, opacity: 1 }}
           className="text-2xl font-bold"
         >
-          <Link href="/">GymTechWear</Link>
+          <Link href="/">GymTechGear</Link>
         </motion.div>
 
         <nav className="hidden lg:flex space-x-6">

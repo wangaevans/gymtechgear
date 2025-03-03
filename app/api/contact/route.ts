@@ -35,8 +35,8 @@ export async function POST(request: NextRequest) {
     
     // Email content
     const mailOptions = {
-      from: process.env.EMAIL_FROM || 'Gymtechwear <no-reply@gymtechwear.com>',
-      to: process.env.EMAIL_TO || 'support@gymtechwear.com',
+      from: process.env.EMAIL_FROM || 'gymtechgear <no-reply@gymtechgear.com>',
+      to: process.env.EMAIL_TO || 'support@gymtechgear.com',
       replyTo: email,
       subject: `Contact Form: ${subject}`,
       text: `
