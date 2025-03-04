@@ -77,7 +77,7 @@ const HomePage = ({ categories }: HomePageProps) => {
                 interval={5000}
                 showThumbs={false}
                 swipeable={true}
-                emulateTouch={true}
+                // emulateTouch={true}
                 className="category-carousel"
                 renderArrowPrev={(clickHandler, hasPrev) => (
                   <button

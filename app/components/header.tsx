@@ -9,11 +9,24 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDebounce } from "@/hooks/useDebounce";
 import { client } from "@/sanity/lib/client";
-import { searchProductsQuery } from "@/sanity/lib/queries";
 import { Product } from "@/types/product";
+
+// Define the search query according to the Sanity guide
+const searchQuery = `*[_type == "product" && (name match $searchTerm || description match $searchTerm)] {
+  _id,
+  name,
+  price,
+  "slug": slug.current,
+  "image": {
+    "asset": {
+      "url": image.asset->url
+    }
+  }
+}[0...10]`;
 
 const navLinks = [
   { name: "Home", href: "/" },
+  { name: "About", href: "/about" },
   { name: "Men", href: "/audience/men" },
   { name: "Women", href: "/audience/women" },
   { name: "Training", href: "/category/training" },
@@ -54,48 +67,28 @@ const Header = () => {
       setSearchResults([]);
       return;
     }
-  
-    const fetchResults = async () => {
+
+    const fetchSearchResults = async () => {
       setIsSearching(true);
       try {
-        console.log('Searching for:', debouncedSearchTerm); // Debug search term
-        const results = await client.fetch<Product[]>(
-          searchProductsQuery,
-          { searchTerm: debouncedSearchTerm }
-        );
-        console.log('Search results:', results); // Debug results
+        // Format the search term to work with Sanity's text search
+        const formattedSearchTerm = `*${debouncedSearchTerm}*`;
+        
+        // Use the Sanity client to search
+        const results = await client.fetch(searchQuery, {
+          searchTerm: formattedSearchTerm
+        });
+        
+        console.log('Sanity search results:', results);
         setSearchResults(results);
       } catch (error) {
         console.error("Search error:", error);
-      }
-      setIsSearching(false);
-    };
-  
-    fetchResults();
-  }, [debouncedSearchTerm]);
-
-  useEffect(() => {
-    if (!debouncedSearchTerm) {
-      setSearchResults([]);
-      return;
-    }
-
-    const fetchResults = async () => {
-      setIsSearching(true);
-      try {
-        // Updated query parameters to match Sanity client's expected type
-        const results = await client.fetch<Product[]>(
-          searchProductsQuery,
-          { searchTerm: debouncedSearchTerm }
-        );
-        setSearchResults(results);
-      } catch (error) {
-        console.error("Search error:", error);
+        setSearchResults([]);
       }
       setIsSearching(false);
     };
 
-    fetchResults();
+    fetchSearchResults();
   }, [debouncedSearchTerm]);
 
   const isLinkActive = (href: string) => {
@@ -113,20 +106,6 @@ const Header = () => {
         scrolled ? "shadow-md" : "shadow-sm"
       } transition-all duration-300`}
     >
-      {/* <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="bg-black text-white text-center py-2 text-sm"
-      >
-        <motion.span
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          Free shipping on orders over $100 | Shop Now
-        </motion.span>
-      </motion.div> */}
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center h-16 md:h-20">
         <motion.button
           whileHover={{ scale: 1.1 }}
@@ -243,7 +222,7 @@ const Header = () => {
                               className="border-b last:border-b-0"
                             >
                               <Link
-                                href={`/product/${product.slug.current}`}
+                                href={`/product/${product.slug}`}
                                 className="flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors"
                                 onClick={() => setIsSearchOpen(false)}
                               >
