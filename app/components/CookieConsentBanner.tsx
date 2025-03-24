@@ -98,7 +98,7 @@ const CookieConsentBanner: React.FC<CookieConsentBannerProps> = ({
         <h3 style={{ margin: "0 0 8px 0", fontSize: "16px" }}>Cookie Settings</h3>
         <p style={{ margin: "0", lineHeight: "1.5" }}>
           This website uses cookies to enhance your experience and analyze site traffic. 
-          By clicking &quotes;Accept All&quotes;, you consent to our use of cookies as described in our
+          By clicking &quot;Accept All&quot;, you consent to our use of cookies as described in our
           <Link href={privacyUrl} style={{ color: "#4CAF50", textDecoration: "underline" }}>
             Privacy Policy
           </Link>

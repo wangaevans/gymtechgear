@@ -72,7 +72,7 @@ export default function PrivacyPolicy() {
           </p>
           <p className="text-gray-700 mt-2">
             Email: privacy@gymtechgear.com<br />
-            Phone: +254742996789
+            Phone: +254 742 996 789
           </p>
         </section>
 
