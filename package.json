@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "type": "module",
   "private": true,
-  "scripts": {
+  "engines": {
+  "node": "20.x"
+},  "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "lint": "next lint",

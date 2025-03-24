@@ -261,7 +261,7 @@ const Header = () => {
             </AnimatePresence>
           </motion.div>
 
-          <SignedIn>
+          {/* <SignedIn>
             <UserButton afterSignOutUrl="/" />
           </SignedIn>
           <SignedOut>
@@ -270,7 +270,7 @@ const Header = () => {
                 <User size={22} className="text-gray-800" />
               </Link>
             </motion.div>
-          </SignedOut>
+          </SignedOut> */}
         </motion.div>
       </div>
 
