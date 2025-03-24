@@ -2,7 +2,7 @@
 
 import CookieConsentBanner from "./CookieConsentBanner";
 
-export default async function ClientProviders() {
+export default function ClientProviders() {
     return (
         <>
             <CookieConsentBanner />
