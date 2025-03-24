@@ -18,7 +18,7 @@ export default function Footer() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
             {/* Brand Info */}
             <div>
-              <h2 className="text-2xl font-bold text-white mb-6">gymtechgear</h2>
+              <h2 className="text-2xl font-bold text-white mb-6">Gymtechgear</h2>
               <div className="space-y-4 text-gray-400">
                 <p className="mb-6">Elevate your workout with premium technical sportswear designed for peak performance.</p>
                 <div className="flex items-center">
@@ -27,7 +27,7 @@ export default function Footer() {
                 </div>
                 <div className="flex items-center">
                   <Mail className="w-5 h-5 mr-3 text-blue-500" />
-                  <span>contact@gymtechgear.com</span>
+                  <span>mackdonaldkasamani@gmail.com</span>
                 </div>
               </div>
             </div>
