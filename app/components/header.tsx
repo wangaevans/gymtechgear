@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Menu, Search, User, X } from "lucide-react";
-import { UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
+import { Menu, Search,  X } from "lucide-react";
+// import { UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
