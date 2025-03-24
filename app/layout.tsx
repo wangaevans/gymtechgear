@@ -3,8 +3,9 @@ import "./globals.css";
 import Footer from "./components/footer";
 import Header from "./components/header";
 import { Toaster } from 'react-hot-toast';
+import ClientProviders from "./components/ClientProviders";
+import { Analytics } from "@vercel/analytics/react"
 
-// Mark the component as async to allow static data fetching
 export default async function RootLayout({
   children,
 }: {
@@ -17,9 +18,11 @@ export default async function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body>
+          <Analytics/>
           <Header />
           <Toaster position="top-right" toastOptions={{ duration: 5000 }} />
           {children}
+          <ClientProviders/>
           <Footer />
         </body>
       </html>

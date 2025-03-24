@@ -97,7 +97,7 @@ export default function TermsOfService() {
           <p className="text-gray-700 mt-2">
             Email: <a href="mailto:legal@gymtechgear.com" className="text-blue-600 hover:underline">legal@gymtechgear.com</a>
             <br />
-            Phone: <a href="tel:+15551234567" className="text-blue-600 hover:underline">+1 (555) 123-4567</a>
+            Phone: <a href="tel:+15551234567" className="text-blue-600 hover:underline">+254742996789</a>
           </p>
         </section>
 

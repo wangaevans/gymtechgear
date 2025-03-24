@@ -23,7 +23,7 @@ export default function Footer() {
                 <p className="mb-6">Elevate your workout with premium technical sportswear designed for peak performance.</p>
                 <div className="flex items-center">
                   <Phone className="w-5 h-5 mr-3 text-blue-500" />
-                  <span>+1 (555) 123-4567</span>
+                  <span>+254742996789</span>
                 </div>
                 <div className="flex items-center">
                   <Mail className="w-5 h-5 mr-3 text-blue-500" />
