@@ -4,6 +4,7 @@ import Header from "./components/header";
 import { Toaster } from 'react-hot-toast';
 import ClientProviders from "./components/ClientProviders";
 import { Analytics } from "@vercel/analytics/react"
+import Script from 'next/script'
 
 export default async function RootLayout({
   children,
@@ -14,11 +15,7 @@ export default async function RootLayout({
   // const categories = await client.fetch(allCategoriesQuery);
 
   return (
-    <>
       <html lang="en">
-        <head>
-               <meta name="google-adsense-account" content="ca-pub-8281092193891669">
-        </head>
         <body>
           <Analytics/>
           <Header />
@@ -26,8 +23,14 @@ export default async function RootLayout({
           {children}
           <ClientProviders/>
           <Footer />
+       <Script 
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8281092193891669"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
         </body>
       </html>
-        </>
+      
   );
 }
