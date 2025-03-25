@@ -3,9 +3,7 @@
   "version": "0.1.0",
   "type": "module",
   "private": true,
-  "engines": {
-  "node": "20.x"
-},  "scripts": {
+  "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "lint": "next lint",
@@ -14,6 +12,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^6.11.3",
+    "next-google-adsense":"^1.0.13",
     "@sanity/image-url": "^1.1.0",
     "@sanity/vision": "^3.76.1",
     "@sanity/webhook": "^4.0.4",
