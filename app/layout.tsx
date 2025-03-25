@@ -18,7 +18,7 @@ export default async function RootLayout({
       <html lang="en">
         <body>
           <Analytics/>
-            <GoogleAdSense publisherId="pub--8281092193891669" /> 
+            <GoogleAdSense publisherId="pub-8281092193891669" /> 
           <Header />
           <Toaster position="top-right" toastOptions={{ duration: 5000 }} />
           {children}
