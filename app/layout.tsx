@@ -17,7 +17,9 @@ export default async function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <meta name="google-adsense-account" content="ca-pub-8281092193891669">
+        <head>
+               <meta name="google-adsense-account" content="ca-pub-8281092193891669">
+        </head>
         <body>
           <Analytics/>
           <Header />
