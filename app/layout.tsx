@@ -1,4 +1,3 @@
-import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import Footer from "./components/footer";
 import Header from "./components/header";
@@ -15,7 +14,7 @@ export default async function RootLayout({
   // const categories = await client.fetch(allCategoriesQuery);
 
   return (
-    <ClerkProvider>
+    <>
       <html lang="en">
         <head>
                <meta name="google-adsense-account" content="ca-pub-8281092193891669">
@@ -29,6 +28,6 @@ export default async function RootLayout({
           <Footer />
         </body>
       </html>
-    </ClerkProvider>
+        </>
   );
 }
