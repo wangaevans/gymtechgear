@@ -16,6 +16,9 @@ export default async function RootLayout({
 
   return (
       <html lang="en">
+        <head>
+          <meta name="robots" content="index, follow">
+        </head>
         <body>
           <Analytics/>
             <GoogleAdSense publisherId="pub-8281092193891669" /> 
